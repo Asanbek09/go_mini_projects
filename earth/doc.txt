@@ -1,0 +1,9 @@
+INTERNAL AND EXTERNAL TESTING
+There are two approaches to testing. In one case we test from the user’s point of view, 
+so we can only test what is exposed; this is called external testing. 
+The test files should be in the {packagename}_test package, in the same folder.
+
+In the second case, called internal testing, we know everything that goes on inside and we want to test the unexposed functions. 
+The test files should be in the same package as the source file.
+These two approaches are not exclusive, and should be seen as complementary.
+
