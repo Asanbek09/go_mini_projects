@@ -26,12 +26,12 @@ func TestLoadBookworms_Success(t *testing.T) {
 			wantErr: false,
 		},
 		"file doesn't exist": {
-			bookwormsFile: "no_file_here.json",
+			bookwormsFile: "database/no_file_here.json",
 			want: nil,
 			wantErr: true,
 		},
 		"invalid JSON": {
-			bookwormsFile: "invalid.json",
+			bookwormsFile: "database/invalid.json",
 			want: nil,
 			wantErr: true,
 		},
