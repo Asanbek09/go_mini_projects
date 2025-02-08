@@ -6,17 +6,16 @@ import (
 )
 
 type Bookworm struct {
-	Name string `json:"name"`
+	Name  string `json:"name"`
 	Books []Book `json:"books"`
 }
 
 type Book struct {
 	Author string `json:"author"`
-	Title string `json:"title"`
+	Title  string `json:"title"`
 }
 
 func loadBookworms(filePath string) ([]Bookworm, error) {
-	var bookworms []Bookworm
 
 	f, err := os.Open(filePath)
 	if err != nil {
@@ -24,11 +23,11 @@ func loadBookworms(filePath string) ([]Bookworm, error) {
 	}
 	defer f.Close()
 
-	err = json.NewDecoder(f).Decode(&bookworms)
+	var bookworms []Bookworm
 
+	err = json.NewDecoder(f).Decode(&bookworms)
 	if err != nil {
 		return nil, err
 	}
 	return bookworms, nil
 }
-
