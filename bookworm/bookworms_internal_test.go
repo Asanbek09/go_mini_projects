@@ -47,7 +47,7 @@ func TestLoadBookworms_Success(t *testing.T) {
 				t.Fatalf("expected no error, got one %s", err.Error())
 			}
 
-			if !equalBookworms(got, testCase.want) {
+			if !equalBookworms(t, got, testCase.want) {
 				t.Fatalf("different result: got %v, expected: %v", got, testCase.want)
 			}
 		})
@@ -67,6 +67,22 @@ func equalBookworms(t *testing.T, bookworms, target []Bookworm) bool {
 		}
 
 		if !equalBooks(t, bookworms[i].Books, target[i].Books) {
+			return false
+		}
+	}
+
+	return true
+}
+
+func equalBooks(t *testing.T, books, target []Book) bool {
+	t.Helper()
+
+	if len(books) != len(target) {
+		return false
+	}
+
+	for i := range books {
+		if books[i] != target[i] {
 			return false
 		}
 	}
