@@ -36,4 +36,20 @@ func TestLoadBookworms_Success(t *testing.T) {
 			wantErr: true,
 		},
 	}
+	for name, testCase := range tests{
+		t.Run(name, func(t *testing.T) {
+			got, err := loadBookworms(testCase.bookwormsFile)
+			if err != nil && !testCase.wantErr {
+				t.Fatalf("expected an error %s, got none", err.Error())
+			}
+
+			if err == nil && testCase.wantErr {
+				t.Fatalf("expected no error, got one %s", err.Error())
+			}
+
+			if !equalBookworms(got, testCase.want) {
+				t.Fatalf("different result: got %v, expected: %v", got, testCase.want)
+			}
+		})
+	}
 }
