@@ -31,3 +31,7 @@ func loadBookworms(filePath string) ([]Bookworm, error) {
 	}
 	return bookworms, nil
 }
+
+func findCommonBooks(bookworms []Bookworm) []Book {
+	return nil
+}
