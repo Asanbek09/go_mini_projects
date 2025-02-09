@@ -2,25 +2,29 @@ package main
 
 import "testing"
 
+func Example_main() {
+	main()
+}
+
 var (
 	handmaidsTale = Book{Author: "Margaret Atwwod", Title: "The Handmaid's Tale"}
-	oryxAndCrake = Book{Author: "Margaret Atwood", Title: "Oryx and Crake"}
-	theBellJar = Book{Author: "Sylvia Plath", Title: "The Bell Jar"}
-	janeEyre = Book{Author: "Charlotte Bronte", Title: "Jane Eyre"}
-	villette = Book{Author: "Charlotte Bronte", Title: "Villette"}
-	ilPrincipe = Book{Author: "Niccolo Machiavelli", Title: "Il Principe"}
+	oryxAndCrake  = Book{Author: "Margaret Atwood", Title: "Oryx and Crake"}
+	theBellJar    = Book{Author: "Sylvia Plath", Title: "The Bell Jar"}
+	janeEyre      = Book{Author: "Charlotte Bronte", Title: "Jane Eyre"}
+	villette      = Book{Author: "Charlotte Bronte", Title: "Villette"}
+	ilPrincipe    = Book{Author: "Niccolo Machiavelli", Title: "Il Principe"}
 )
 
 func TestLoadBookworms_Success(t *testing.T) {
 	type testCase struct {
 		bookwormsFile string
-		want []Bookworm
-		wantErr bool
+		want          []Bookworm
+		wantErr       bool
 	}
 
 	tests := map[string]testCase{
 		"file exists": {
-			bookwormsFile: "data.json",
+			bookwormsFile: "database/data.json",
 			want: []Bookworm{
 				{Name: "Fadi", Books: []Book{handmaidsTale, theBellJar}},
 				{Name: "Peggy", Books: []Book{oryxAndCrake, handmaidsTale, janeEyre}},
@@ -29,16 +33,16 @@ func TestLoadBookworms_Success(t *testing.T) {
 		},
 		"file doesn't exist": {
 			bookwormsFile: "database/no_file_here.json",
-			want: nil,
-			wantErr: true,
+			want:          nil,
+			wantErr:       true,
 		},
 		"invalid JSON": {
 			bookwormsFile: "database/invalid.json",
-			want: nil,
-			wantErr: true,
+			want:          nil,
+			wantErr:       true,
 		},
 	}
-	for name, testCase := range tests{
+	for name, testCase := range tests {
 		t.Run(name, func(t *testing.T) {
 			got, err := loadBookworms(testCase.bookwormsFile)
 			if err != nil && !testCase.wantErr {
@@ -111,7 +115,7 @@ func equalBooksCount(t *testing.T, got, want map[Book]uint) bool {
 func TestBooksCount(t *testing.T) {
 	tt := map[string]struct {
 		input []Bookworm
-		want map[Book]uint
+		want  map[Book]uint
 	}{
 		"nominal use case": {
 			input: []Bookworm{
@@ -122,7 +126,7 @@ func TestBooksCount(t *testing.T) {
 		},
 		"no bookworms": {
 			input: []Bookworm{},
-			want: map[Book]uint{},
+			want:  map[Book]uint{},
 		},
 		"bookworm without books": {
 			input: []Bookworm{
@@ -153,10 +157,10 @@ func TestBooksCount(t *testing.T) {
 func TestFindCommonBooks(t *testing.T) {
 	tt := map[string]struct {
 		input []Bookworm
-		want []Book
+		want  []Book
 	}{
 		"no common book": {
-			input: []Bookworm {
+			input: []Bookworm{
 				{Name: "Fadi", Books: []Book{handmaidsTale, theBellJar}},
 				{Name: "Peggy", Books: []Book{oryxAndCrake, janeEyre}},
 			},
