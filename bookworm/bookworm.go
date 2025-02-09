@@ -44,7 +44,7 @@ func findCommonBooks(bookworms []Bookworm) []Book {
 		}
 	}
 
-	return commonBooks
+	return sortBooks(commonBooks)
 }
 
 func booksCount(bookworms []Bookworm) map[Book]uint {
