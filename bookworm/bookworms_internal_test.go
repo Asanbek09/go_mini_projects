@@ -89,3 +89,19 @@ func equalBooks(t *testing.T, books, target []Book) bool {
 
 	return true
 }
+
+func equalBooksCount(t *testing.T, got, want map[Book]uint) bool {
+	t.Helper()
+
+	if len(got) != len(want) {
+		return false
+	}
+
+	for book, targetCount := range want {
+		count, ok := got[book]
+		if !ok || targetCount != count {
+			return false
+		}
+	}
+	return true
+}
