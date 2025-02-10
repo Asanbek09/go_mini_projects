@@ -68,3 +68,15 @@ func recommendBooks(recommendations bookRecommendations, myBooks []Book) []Book 
 
 	return recommendationsForABook
 }
+
+func registerBookRecommendations(recommendations bookRecommendations, reference Book, otherBooksOnShelves []Book) {
+	for _, book := range otherBooksOnShelves {
+		collection, ok := recommendations[reference]
+		if !ok {
+			collection = newCollection()
+			recommendations[reference] = collection
+		}
+
+		collection[book] = struct{}{}
+	}
+}
