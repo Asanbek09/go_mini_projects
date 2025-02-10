@@ -16,7 +16,7 @@ func recommendOtherBooks(bookworms []Bookworm) []Bookworm {
 	for _, bookworm := range bookworms {
 		for i, book := range bookworm.Books {
 			otherBooksOnShelves := listOtherBooksOnShelves(i, bookworm.Books)
-			registerBookRecommendations(sb, book, otherBooksOnShelves)
+			registerBookRecommendations(sh, book, otherBooksOnShelves)
 		}
 	}
 
@@ -24,7 +24,7 @@ func recommendOtherBooks(bookworms []Bookworm) []Bookworm {
 	for i, bookworm := range bookworms {
 		recommendations[i] = Bookworm{
 			Name: bookworm.Name,
-			Books: recommendBooks(sb, bookworm.Books),
+			Books: recommendBooks(sh, bookworm.Books),
 		}
 	}
 
@@ -79,4 +79,20 @@ func registerBookRecommendations(recommendations bookRecommendations, reference 
 
 		collection[book] = struct{}{}
 	}
+}
+
+func bookCollectionToListOfBooks(bc bookCollection) []Book {
+	bookList := make([]Book, 0, len(bc))
+	for book := range bc {
+		bookList = append(bookList, book)
+	}
+
+	sort.Slice(bookList, func(i, j int) bool {
+		if bookList[i].Author != bookList[j].Author {
+			return bookList[i].Author < bookList[j].Author
+		}
+		return bookList[i].Title < bookList[j].Title
+	})
+
+	return bookList
 }
