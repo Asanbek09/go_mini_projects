@@ -37,3 +37,11 @@ func (s set) Contains(b Book) bool {
 	_, ok := s[b]
 	return ok
 }
+
+func listOtherBooksOnShelves(bookIndexToRemove int, myBooks []Book) []Book {
+	otherBooksOnShelves := make([]Book, bookIndexToRemove, len(myBooks)-1)
+	copy(otherBooksOnShelves, myBooks[:bookIndexToRemove])
+	otherBooksOnShelves = append(otherBooksOnShelves, myBooks[bookIndexToRemove+1:]...)
+
+	return otherBooksOnShelves
+}
