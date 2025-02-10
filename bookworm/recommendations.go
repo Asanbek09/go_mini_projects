@@ -1,5 +1,15 @@
 package main
 
+import "sort"
+
+type bookRecommendations map[Book]bookCollection
+
+type bookCollection map[Book]struct{}
+
+func newCollection() bookCollection {
+	return make(bookCollection)
+}
+
 func recommendOtherBooks(bookworms []Bookworm) []Bookworm {
 	sh := make(bookRecommendations)
 
