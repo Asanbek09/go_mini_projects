@@ -45,3 +45,26 @@ func listOtherBooksOnShelves(bookIndexToRemove int, myBooks []Book) []Book {
 
 	return otherBooksOnShelves
 }
+
+func recommendBooks(recommendations bookRecommendations, myBooks []Book) []Book {
+	bc := make(bookCollection)
+
+	myShelf := make(map[Book]bool)
+	for _, myBook := range myBooks {
+		myShelf[myBook] = true
+	}
+
+	for _, myBook := range myBooks {
+		for recommendation := range recommendations[myBook] {
+			if myShelf[recommendation] {
+				continue
+			}
+
+			bc[recommendation] = struct{}{}
+		}
+	}
+
+	recommendationsForABook := bookCollectionToListOfBooks(bc)
+
+	return recommendationsForABook
+}
