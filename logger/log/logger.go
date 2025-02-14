@@ -22,7 +22,11 @@ func (l *Logger) Debugf(format string, args ...any) {
 		return
 	}
 
-	_, _ = fmt.Printf(format+"\n", args...)
+	l.logf(format, args...)
+}
+
+func (l *Logger) logf(format string, args ...any) {
+	_, _ = fmt.Fprintf(l.output, format+"\n", args...)
 }
 
 func (l *Logger) Infof(format string, args ...any) {}
