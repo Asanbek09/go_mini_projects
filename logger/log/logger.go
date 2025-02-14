@@ -1,14 +1,19 @@
 package log
 
-import "fmt"
+import (
+	"fmt"
+	"io"
+)
 
 type Logger struct {
 	threshold Level
+	output io.Writer
 }
 
-func New(threshold Level) *Logger {
+func New(threshold Level, output io.Writer) *Logger {
 	return &Logger{
 		threshold: threshold,
+		output: output,
 	}
 }
 
