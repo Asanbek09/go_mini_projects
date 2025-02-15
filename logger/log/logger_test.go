@@ -1,10 +1,9 @@
 package log_test
 
 import (
-	"os"
 	"logger/log"
 )
 func ExampleLogger_Debugf() {
-	debugLogger := log.New(log.LevelDebug, os.Stdout)
+	debugLogger := log.New(log.LevelDebug)
 	debugLogger.Debugf("Hello, %s", "world")
 }
