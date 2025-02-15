@@ -33,4 +33,10 @@ func (l *Logger) logf(format string, args ...any) {
 	_, _ = fmt.Fprintf(l.output, format+"\n", args...)
 }
 
-func (l *Logger) Infof(format string, args ...any) {}
+func (l *Logger) Infof(format string, args ...any) {
+	if l.threshold > LeveInfo {
+		return
+	}
+
+	l.logf(format, args...)
+}
