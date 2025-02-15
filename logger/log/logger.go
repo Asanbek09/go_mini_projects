@@ -40,3 +40,11 @@ func (l *Logger) Infof(format string, args ...any) {
 
 	l.logf(format, args...)
 }
+
+func (l *Logger) Errorf(format string, args ...any) {
+	if l.threshold > LevelError {
+		return
+	}
+
+	l.logf(format, args...)
+}
