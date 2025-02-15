@@ -4,6 +4,12 @@ import (
 	"logger/log"
 )
 
+const (
+	debugMessage = "Why write I still all one, ever the same"
+	infoMessage = "And keep invention in a noted weed"
+	errorMessage = "That every word doth almost tell my name"
+)
+
 type testWriter struct {
 	contents string
 }
