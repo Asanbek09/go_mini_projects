@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"strings"
 )
 
 type Game struct {
@@ -58,4 +59,8 @@ func (g *Game) validateGuess(guess []rune) error {
 	}
 
 	return nil
+}
+
+func splitToUppercaseCharacters(input string) []rune {
+	return []rune(strings.ToUpper(input))
 }
