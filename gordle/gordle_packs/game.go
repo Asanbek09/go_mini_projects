@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"slices"
 	"strings"
 )
 
@@ -27,9 +28,16 @@ func New(playerInput io.Reader, solution string, maxAttempts int) *Game {
 func (g *Game) Play() {
 	fmt.Println("Welcome to Gordle!")
 
-	guess := g.ask()
+	for currentAttempt := 1; currentAttempt <= g.maxAttempts; currentAttempt++ {
+		guess := g.ask()
 
-	fmt.Printf("Your guess is: %s\n", string(guess))
+		if slices.Equal(guess, g.solution) {
+			fmt.Printf("You won! You found it in %d guess(es)! The word has: %s\n", currentAttempt, string(g.solution))
+			return
+		}
+	}
+
+	fmt.Printf("You have lost! The solution was: %s\n", string(g.solution))
 }
 
 const solutionLength = 5
