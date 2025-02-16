@@ -5,7 +5,11 @@ import (
     "gordle/gordle_packs"
 )
 
+const maxAttempts = 6
+
 func main() {
-    g := gordlepacks.New(os.Stdin)
+    solution := "Hello"
+
+    g := gordlepacks.New(os.Stdin, solution, maxAttempts)
     g.Play()
 }

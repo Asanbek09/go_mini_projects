@@ -43,7 +43,7 @@ func (g *Game) Play() {
 const solutionLength = 5
 
 func (g *Game) ask() []rune {
-	fmt.Printf("Enter a %d-character guess: \n", solutionLength)
+	fmt.Printf("Enter a %d-character guess: \n", len(g.solution))
 
 	for {
 		playerInput, _, err := g.reader.ReadLine()
