@@ -1,11 +1,19 @@
 package gordlepacks
 
-import "fmt"
+import (
+	"bufio"
+	"fmt"
+	"io"
+)
 
-type Game struct {}
+type Game struct {
+	reader *bufio.Reader
+}
 
-func New() *Game {
-	g := &Game{}
+func New(playerInput io.Reader) *Game {
+	g := &Game{
+		reader: bufio.NewReader(playerInput),
+	}
 
 	return g
 }
