@@ -1,11 +1,11 @@
 package main
 
 import (
-	"fmt"
+	"os"
+    "gordle/gordle_packs"
 )
 
 func main() {
-    fmt.Println("Hello, 世界")
-    fmt.Println(len("Hello, 世界"))
-    fmt.Println(len([]rune("Hello, 世界")))
+    g := gordlepacks.New(os.Stdin)
+    g.Play()
 }
