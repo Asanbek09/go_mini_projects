@@ -10,6 +10,8 @@ import (
 
 type Game struct {
 	reader *bufio.Reader
+	solution []rune
+	maxAttempts int
 }
 
 func New(playerInput io.Reader) *Game {
