@@ -41,8 +41,9 @@ func (g *Game) ask() []rune {
 
 		guess := []rune(string(playerInput))
 
-		if len(guess) != solutionLength {
-			_, _ = fmt.Fprintf(os.Stderr, "Your attempt is invalid with Gordle's solution! Expected %d characters, got %d\n", solutionLength, len(guess))
+		err = g.validateGuess(guess)
+		if err != nil {
+			_, _ = fmt.Fprintf(os.Stderr, "Your attempt is invalid with gordle's solution: %s\n", err.Error())
 		} else {
 			return guess
 		}
