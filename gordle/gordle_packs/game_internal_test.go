@@ -76,3 +76,25 @@ func TestGameValidateGuess(t *testing.T) {
 		})
 	}
 }
+
+func TestSplitToUppercaseCharacters(t *testing.T) {
+	tt := map[string]struct {
+		input string
+		want []rune
+	}{
+		"lowercase": {
+			input: "pocket",
+			want: []rune("POCKET"),
+		},
+	}
+
+	for name, tc := range tt {
+		t.Run(name, func(t *testing.T) {
+			got := splitToUppercaseCharacters(tc.input)
+
+			if !slices.Equal(tc.want, got) {
+				t.Errorf("Expected %v, got %v", tc.want, got)
+			}
+		})
+	}
+}
