@@ -48,3 +48,13 @@ func (g *Game) ask() []rune {
 		}
 	}
 }
+
+var errInvalidWordLength = fmt.Errorf("Invalid guess, word doesn't have the same number of charaters as the solution")
+
+func (g *Game) validateGuess(guess []rune) error {
+	if len(guess) != solutionLength {
+		return fmt.Errorf("Expected %d, got %d, %w", solutionLength, len(guess), errInvalidWordLength)
+	}
+
+	return nil
+}
