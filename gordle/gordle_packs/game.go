@@ -52,7 +52,7 @@ func (g *Game) ask() []rune {
 			continue
 		}
 
-		guess := []rune(string(playerInput))
+		guess := splitToUppercaseCharacters(string(playerInput))
 
 		err = g.validateGuess(guess)
 		if err != nil {
@@ -66,8 +66,8 @@ func (g *Game) ask() []rune {
 var errInvalidWordLength = fmt.Errorf("Invalid guess, word doesn't have the same number of charaters as the solution")
 
 func (g *Game) validateGuess(guess []rune) error {
-	if len(guess) != solutionLength {
-		return fmt.Errorf("Expected %d, got %d, %w", solutionLength, len(guess), errInvalidWordLength)
+	if len(guess) != len(g.solution) {
+		return fmt.Errorf("Expected %d, got %d, %w", len(g.solution), len(guess), errInvalidWordLength)
 	}
 
 	return nil
