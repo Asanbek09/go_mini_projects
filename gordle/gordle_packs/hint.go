@@ -1,5 +1,7 @@
 package gordlepacks
 
+import "strings"
+
 type hint byte
 type feedback []hint
 
@@ -29,4 +31,13 @@ func (fb feedback) StringConcat() string {
 	}
 
 	return output
+}
+
+func (fb feedback) String() string {
+	sb := strings.Builder{}
+	for _, h := range fb {
+		sb.WriteString(h.String())
+	}
+
+	return sb.String()
 }
