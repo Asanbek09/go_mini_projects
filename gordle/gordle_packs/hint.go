@@ -1,6 +1,10 @@
 package gordlepacks
 
-import "strings"
+import (
+	"fmt"
+	"os"
+	"strings"
+)
 
 type hint byte
 type feedback []hint
@@ -8,7 +12,7 @@ type feedback []hint
 const (
 	absentCharacter hint = iota
 	wrongPosition
-	correctPosition 
+	correctPosition
 )
 
 func (h hint) String() string {
@@ -40,4 +44,39 @@ func (fb feedback) String() string {
 	}
 
 	return sb.String()
+}
+
+func computeFeddback(guess, solution []rune) feedback {
+	result := make(feedback, len(guess))
+	used := make([]bool, len(solution))
+
+	if len(guess) != len(solution) {
+		_, _ = fmt.Fprintf(os.Stderr, "Internal error! Guess and solution have different lengths: %d vs %d", len(guess), len(solution))
+		return result
+	}
+
+	for posInGuess, character := range guess {
+		if character == solution[posInGuess] {
+			result[posInGuess] = correctPosition
+			used[posInGuess] = true
+		}
+	}
+
+	for posInGuess, character := range guess {
+		if result[posInGuess] != absentCharacter {
+			continue
+		}
+
+		for posInSolution, target := range solution {
+			if used[posInSolution] {
+				continue
+			}
+			if character == target {
+				result[posInGuess] = wrongPosition
+				used[posInSolution] = true
+				break
+			}
+		}
+	}
+	return result
 }
