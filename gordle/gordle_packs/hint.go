@@ -1,6 +1,7 @@
 package gordlepacks
 
 type hint byte
+type feedback []hint
 
 const (
 	absentCharacter hint = iota
@@ -19,4 +20,13 @@ func (h hint) String() string {
 	default:
 		return "❤️"
 	}
+}
+
+func (fb feedback) StringConcat() string {
+	var output string
+	for _, h := range fb {
+		output += h.String()
+	}
+
+	return output
 }
