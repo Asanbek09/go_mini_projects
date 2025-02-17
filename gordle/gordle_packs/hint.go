@@ -46,7 +46,7 @@ func (fb feedback) String() string {
 	return sb.String()
 }
 
-func computeFeddback(guess, solution []rune) feedback {
+func computeFeedback(guess, solution []rune) feedback {
 	result := make(feedback, len(guess))
 	used := make([]bool, len(solution))
 
