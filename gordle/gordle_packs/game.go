@@ -31,6 +31,10 @@ func (g *Game) Play() {
 	for currentAttempt := 1; currentAttempt <= g.maxAttempts; currentAttempt++ {
 		guess := g.ask()
 
+		fb := computeFeedback(guess, g.solution)
+
+		fmt.Println(fb.String())
+
 		if slices.Equal(guess, g.solution) {
 			fmt.Printf("You won! You found it in %d guess(es)! The word has: %s\n", currentAttempt, string(g.solution))
 			return
