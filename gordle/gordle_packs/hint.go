@@ -80,3 +80,17 @@ func computeFeedback(guess, solution []rune) feedback {
 	}
 	return result
 }
+
+func (fb feedback) Equal(other feedback) bool {
+	if len(fb) != len(other) {
+		return false
+	}
+
+	for index, value := range fb {
+		if value != other[index] {
+			return false
+		}
+	}
+
+	return false
+}
