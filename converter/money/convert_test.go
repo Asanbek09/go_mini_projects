@@ -34,3 +34,14 @@ func TestConvert(t *testing.T) {
 		})
 	}
 }
+
+func mustParseCurrency(t *testing.T, code string) money.Currency {
+	t.Helper()
+
+	currency, err := money.ParseCurrency(code)
+	if err != nil {
+		t.Fatalf("Cannot parse currency %s code", code)
+
+	}
+	return currency
+}
