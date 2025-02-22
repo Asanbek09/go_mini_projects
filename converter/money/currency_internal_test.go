@@ -29,3 +29,10 @@ func TestParseCurrency_Success(t *testing.T) {
 		})
 	}
 }
+
+func TestParseCurrency_UnknownCurrency(t *testing.T) {
+	_, err := ParseCurrency("INVALID")
+	if !errors.Is(err, ErrInvalidCurrencyCode) {
+		t.Errorf("expected error %s, got %v", ErrInvalidCurrencyCode, err)
+	}
+}
