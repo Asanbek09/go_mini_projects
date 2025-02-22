@@ -45,3 +45,24 @@ func mustParseCurrency(t *testing.T, code string) money.Currency {
 	}
 	return currency
 }
+
+func mustParseAmount(t *testing.T, value string, code string) money.Amount {
+	t.Helper()
+
+	n, err := money.ParseDecimal(value)
+	if err != nil {
+		t.Fatalf("Invalid number: %s", value)
+	}
+
+	currency, err := money.ParseCurrency(code)
+	if err != nil {
+		t.Fatalf("Invalid currency code: %s", code)
+	}
+
+	amount, err := money.NewAmount(n, currency)
+	if err != nil {
+		t.Fatalf("cannot create amount with value %v and currency code %s", n, code)
+	}
+
+	return amount
+}
