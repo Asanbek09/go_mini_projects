@@ -35,3 +35,10 @@ func ParseDecimal(value string) (Decimal, error) {
 
 	return Decimal{subunits: subunits, precision: precision}, nil
 }
+
+func (d *Decimal) simplify() {
+	for d.subunits%10 == 0 && d.precision > 0 {
+		d.precision--
+		d.subunits /= 10
+	}
+}
