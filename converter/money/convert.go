@@ -43,3 +43,14 @@ func applyExchangeRate(a Amount, target Currency, rate ExchangeRate) Amount {
 		quantity: converted,
 	}
 }
+
+func multiply(d Decimal, r ExchangeRate) Decimal {
+	dec := Decimal{
+		subunits: d.subunits * r.subunits,
+		precision: d.precision + r.precision,
+	}
+
+	dec.simplify()
+
+	return dec
+}
