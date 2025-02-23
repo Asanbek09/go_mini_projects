@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"os"
 )
 
 func main() {
@@ -11,5 +12,12 @@ func main() {
 
 	flag.Parse()
 
-	fmt.Println(*from, *to)
+	value := flag.Arg(0)
+	if value == "" {
+		_, _ = fmt.Fprintln(os.Stderr, "missing amount to convert")
+		flag.Usage()
+		os.Exit(1)
+	}
+
+	fmt.Println(*from, *to, value)
 }
