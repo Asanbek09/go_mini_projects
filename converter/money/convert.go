@@ -3,7 +3,12 @@ package money
 import "math"
 
 func Convert(amount Amount, to Currency) (Amount, error) {
-	return Amount{}, nil
+	convertedValue := applyExchangeRate(amount, to, ExchangeRate{subunits: 2, precision: 0})
+
+	if err := convertedValue.validate(); err != nil {
+		return Amount{}, err
+	}
+	return convertedValue, nil
 }
 
 type ExchangeRate Decimal
@@ -24,10 +29,7 @@ func pow10(power byte) int64 {
 }
 
 func applyExchangeRate(a Amount, target Currency, rate ExchangeRate) Amount {
-	converted, err := multiply(a.quantity, rate)
-	if err != nil {
-		return Amount{}
-	}
+	converted := multiply(a.quantity, rate)
 
 	switch {
 	case converted.precision > target.precision:
@@ -45,12 +47,8 @@ func applyExchangeRate(a Amount, target Currency, rate ExchangeRate) Amount {
 }
 
 func multiply(d Decimal, r ExchangeRate) Decimal {
-	dec := Decimal{
+	return Decimal{
 		subunits: d.subunits * r.subunits,
 		precision: d.precision + r.precision,
 	}
-
-	dec.simplify()
-
-	return dec
 }
