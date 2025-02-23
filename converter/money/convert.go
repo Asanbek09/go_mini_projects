@@ -22,3 +22,24 @@ func pow10(power byte) int64 {
 		return int64(math.Pow(10, float64(power)))
 	}
 }
+
+func applyExchangeRate(a Amount, target Currency, rate ExchangeRate) Amount {
+	converted, err := multiply(a.quantity, rate)
+	if err != nil {
+		return Amount{}
+	}
+
+	switch {
+	case converted.precision > target.precision:
+		converted.subunits = converted.subunits / pow10(converted.precision-target.precision)
+	case converted.precision < target.precision:
+		converted.subunits = converted.subunits * pow10(target.precision-a.currency.precision)
+	}
+
+	converted.precision = target.precision
+
+	return Amount{
+		currency: target,
+		quantity: converted,
+	}
+}
