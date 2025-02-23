@@ -4,10 +4,7 @@ import "math"
 
 func Convert(amount Amount, to Currency) (Amount, error) {
 	convertedValue := applyExchangeRate(amount, to, ExchangeRate{subunits: 2, precision: 0})
-
-	if err := convertedValue.validate(); err != nil {
-		return Amount{}, err
-	}
+	
 	return convertedValue, nil
 }
 
