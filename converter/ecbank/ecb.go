@@ -6,6 +6,9 @@ import (
 	"fmt"
 )
 
+const (
+	ErrCallingServer = ecbankError("error calling server")
+)
 
 type Client struct{
 	url string
@@ -20,8 +23,11 @@ func (c Client) FetchExchangeRate(source, target money.Currency) (money.Exchange
 
 	resp, err := http.Get(c.url)
 	if err != nil {
-		return money.ExchangeRate{}, fmt.Errorf("%w: %s", ErrServerSide, err.Error())
-}
+		return money.ExchangeRate{}, fmt.Errorf("%w: %s", ErrCallingServer, err.Error())
+	}
+
+	defer resp.Body.Close()
+
 	return money.ExchangeRate{}, nil
 }
 
