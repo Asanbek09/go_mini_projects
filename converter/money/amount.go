@@ -29,3 +29,7 @@ func (a Amount) validate() error {
 
 	return nil
 }
+
+func (a Amount) String() string {
+	return a.number.String() + " " + a.currency.code
+}
