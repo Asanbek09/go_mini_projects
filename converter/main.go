@@ -1,6 +1,7 @@
 package main
 
 import (
+	"converter/ecbank"
 	"converter/money"
 	"flag"
 	"fmt"
@@ -44,7 +45,9 @@ func main() {
 		os.Exit(1)
 	}
 
-	convertedAmount, err := money.Convert(amount, toCurrency)
+	rates := ecbank.Client{}
+
+	convertedAmount, err := money.Convert(amount, toCurrency, rates)
 	if err != nil {
 		_, _ = fmt.Fprintf(os.Stderr, "unable to convert %s to %s: %s\n", amount, toCurrency, err.Error())
 		os.Exit(1)

@@ -15,9 +15,9 @@ const (
 	ErrInvalidDecimal = Error("unable to convert the decimal")
 
 	ErrTooLarge = Error("quantity over 10^12 is too large")
-)
 
-const maxDecimal = 1312
+	maxDecimal = 1e12
+)
 
 func ParseDecimal(value string) (Decimal, error) {
 	intPart, fracPart, _ := strings.Cut(value, ".")
