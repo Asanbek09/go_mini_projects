@@ -44,7 +44,7 @@ func (e envelope) exchangeRate(source, target string) (money.ExchangeRate, error
 
 	targetFactor, targetFound := rates[target]
 	if !targetFound {
-		return 0, fmt.Errorf("failed to find target currency %s", target)
+		return 0., fmt.Errorf("failed to find target currency %s", target)
 	}
 
 	return targetFactor / sourceFactor, nil

@@ -2,8 +2,8 @@ package ecbank
 
 import (
 	"converter/money"
-	"net/http"
 	"fmt"
+	"net/http"
 )
 
 const (
@@ -20,20 +20,25 @@ type Client struct{
 }
 
 func (c Client) FetchExchangeRate(source, target money.Currency) (money.ExchangeRate, error) {
-	const euroxrefURL = "http://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml"
+	const path = "http://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml"
 
-	if c.url == "" {
-		c.url = euroxrefURL
-	}
-
-	resp, err := http.Get(c.url)
+	resp, err := http.Get(path)
 	if err != nil {
-		return money.ExchangeRate{}, fmt.Errorf("%w: %s", ErrCallingServer, err.Error())
+		return 0., fmt.Errorf("%w: %s", ErrServerSide, err.Error())
 	}
 
 	defer resp.Body.Close()
 
-	return money.ExchangeRate{}, nil
+	if err = checkStatusCode(resp.StatusCode); err != nil {
+		return 0., err
+	}
+
+	rate, err := readRateFromResponse(source.Code(), target.Code(), resp.Body)
+	if err != nil {
+		return 0., err
+	}
+
+	return rate, nil
 }
 
 const (
