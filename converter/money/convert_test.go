@@ -29,7 +29,7 @@ func TestConvert(t *testing.T) {
 
 	for name, tc := range tt {
 		t.Run(name, func(t *testing.T) {
-			got, err := money.Convert(tc.amount, tc.to)
+			got, err := money.Convert(tc.amount, tc.to, nil)
 			tc.validate(t, got, err)
 		})
 	}
@@ -65,4 +65,13 @@ func mustParseAmount(t *testing.T, value string, code string) money.Amount {
 	}
 
 	return amount
+}
+
+type stubRate struct {
+	rate money.ExchangeRate
+	err error
+}
+
+func (m stubRate) FetchExchangeRate(_, _ money.Currency) (money.ExchangeRate, error) {
+	return m.rate, m.err
 }
