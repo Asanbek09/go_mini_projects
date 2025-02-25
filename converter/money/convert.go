@@ -1,10 +1,18 @@
 package money
 
-import "math"
+import (
+	"fmt"
+	"math"
+)
 
-func Convert(amount Amount, to Currency) (Amount, error) {
-	convertedValue := applyExchangeRate(amount, to, ExchangeRate{subunits: 2, precision: 0})
-	
+func Convert(amount Amount, to Currency, rates exchangeRates) (Amount, error) {
+	r, err := rates.FetchExchangeRate(amount.currency, to)
+	if err != nil {
+		return Amount{}, fmt.Errorf("cannot get change rate: %w", err)
+	}
+
+	convertedValue := applyExchangeRate(amount, to, r)
+
 	if err := convertedValue.validate(); err != nil {
 		return Amount{}, err
 	}
