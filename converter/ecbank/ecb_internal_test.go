@@ -33,3 +33,14 @@ func TestEuroCentralBank_FetchExchangeRate(t *testing.T) {
 		t.Errorf("FetchExchangeRate() got = %v, want = %v", money.Decimal(got), want)
 	}
 }
+
+func mustParseCurrency(t *testing.T, code string) money.Currency {
+	t.Helper()
+
+	currency, err := money.ParseCurrency(code)
+	if err != nil {
+		t.Fatalf("cannot parse currency %s code", code)
+	}
+
+	return currency
+}
