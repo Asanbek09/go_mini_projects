@@ -20,22 +20,21 @@ type Client struct{
 }
 
 func (c Client) FetchExchangeRate(source, target money.Currency) (money.ExchangeRate, error) {
-	const path = "http://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml"
+	const euroxrefURL = "http://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml"
 
-	resp, err := http.Get(path)
-	if err != nil {
-		return 0., fmt.Errorf("%w: %s", ErrServerSide, err.Error())
+	if c.url == "" {
+		c.url = euroxrefURL
 	}
 
-	defer resp.Body.Close()
+	resp, err := http.Get(c.url)
 
 	if err = checkStatusCode(resp.StatusCode); err != nil {
-		return 0., err
+		return money.ExchangeRate{}, err
 	}
 
 	rate, err := readRateFromResponse(source.Code(), target.Code(), resp.Body)
 	if err != nil {
-		return 0., err
+		return money.ExchangeRate{}, err
 	}
 
 	return rate, nil
