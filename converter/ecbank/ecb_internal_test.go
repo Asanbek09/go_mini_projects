@@ -44,3 +44,14 @@ func mustParseCurrency(t *testing.T, code string) money.Currency {
 
 	return currency
 }
+
+func mustParseDecimal(t *testing.T, decimal string) money.Decimal {
+	t.Helper()
+
+	dec, err := money.ParseDecimal(decimal)
+	if err != nil {
+		t.Fatalf("cannot parse decimal %s", decimal)
+	}
+
+	return dec
+}
