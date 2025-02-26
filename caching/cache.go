@@ -8,4 +8,9 @@ func New[K comparable, V any]() Cache[K, V] {
 	return Cache[K, V]{
 		data: make(map[K]V),
 	}
-} 
+}
+
+func (c *Cache[K, V]) Read(key K) (V, bool) {
+	v, found := c.data[key]
+	return v, found
+}
