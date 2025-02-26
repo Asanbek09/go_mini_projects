@@ -2,13 +2,16 @@ package ecbank
 
 import (
 	"converter/money"
+	"errors"
 	"fmt"
 	"net/http"
+	"net/url"
 	"time"
 )
 
 const (
 	ErrCallingServer      = ecbankError("error calling server")
+	ErrTimeout            = ecbankError("timed out when waiting for response")
 	ErrUnexpectedFormat   = ecbankError("unexpected response format")
 	ErrChangeRateNotFound = ecbankError("couldn't find the exchange rate")
 	ErrClientSide         = ecbankError("client side error when contacting ECB")
@@ -30,6 +33,12 @@ func (c Client) FetchExchangeRate(source, target money.Currency) (money.Exchange
 	const euroxrefURL = "http://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml"
 
 	resp, err := c.client.Get(euroxrefURL)
+	if err != nil {
+		var urlErr *url.Error
+		if ok := errors.As(err, &urlErr); ok && urlErr.Timeout() {
+			return money.ExchangeRate{}, fmt.Errorf("%w: %s", ErrTimeout, err.Error())
+		}
+	}
 
 	if err = checkStatusCode(resp.StatusCode); err != nil {
 		return money.ExchangeRate{}, err
