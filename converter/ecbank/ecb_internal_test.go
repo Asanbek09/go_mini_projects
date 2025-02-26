@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"net/http"
 	"net/http/httptest"
+	"net/url"
 	"testing"
+	"time"
 )
 
 
@@ -18,8 +20,18 @@ func TestEuroCentralBank_FetchExchangeRate(t *testing.T) {
 	}))
 	defer ts.Close()
 
+	proxyURL, err := url.Parse(ts.URL)
+	if err != nil {
+		t.Fatalf("failed to parse proxy URL: %v", err)
+	}
+
 	ecb := Client{
-		url: ts.URL,
+		client: &http.Client{
+			Transport: &http.Transport{
+				Proxy: http.ProxyURL(proxyURL),
+			},
+			Timeout: time.Second,
+		},
 	}
 
 	got, err := ecb.FetchExchangeRate(mustParseCurrency(t, "USD"), mustParseCurrency(t, "RON"))
