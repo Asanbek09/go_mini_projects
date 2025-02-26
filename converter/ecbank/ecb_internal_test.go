@@ -2,6 +2,7 @@ package ecbank
 
 import (
 	"converter/money"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
@@ -66,4 +67,31 @@ func mustParseDecimal(t *testing.T, decimal string) money.Decimal {
 	}
 
 	return dec
+}
+
+func TestEuroCentralBank_FetchExchangeRate_Timeout(t *testing.T) {
+	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		time.Sleep(time.Second * 2)
+	}))
+
+	defer ts.Close()
+
+	proxyURL, err := url.Parse(ts.URL)
+	if err != nil {
+		t.Fatalf("failed to parse proxy URL: %v", err)
+	}
+
+	ecb := Client{
+		client: &http.Client{
+			Transport: &http.Transport{
+				Proxy: http.ProxyURL(proxyURL),
+			},
+			Timeout: time.Second,
+		},
+	}
+
+	_, err = ecb.FetchExchangeRate(mustParseCurrency(t, "USD"), mustParseCurrency(t, "RON"))
+	if !errors.Is(err, ErrTimeout) {
+		t.Errorf("unexpected error: %v, expected: %v", err, ErrTimeout)
+	}
 }
