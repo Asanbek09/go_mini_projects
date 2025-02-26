@@ -4,6 +4,7 @@ import (
 	"converter/money"
 	"fmt"
 	"net/http"
+	"time"
 )
 
 const (
@@ -16,7 +17,13 @@ const (
 )
 
 type Client struct{
-	url string
+	client http.Client
+}
+
+func NewClient(timeout time.Duration) Client {
+	return Client{
+		client: http.Client{Timeout: timeout},
+	}
 }
 
 func (c Client) FetchExchangeRate(source, target money.Currency) (money.ExchangeRate, error) {
