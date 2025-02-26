@@ -2,17 +2,30 @@ package main
 
 import "fmt"
 
-func prettyPrint(f float64) {
-	fmt.Printf("> %f", f)
+type Printable interface {
+	PrettyPrint()
 }
 
-func prettyPrint2[T any](t T) {
-	fmt.Printf("> %v", t)
+type Cloud struct {
+	Value float64
+}
+
+func (c Cloud) PrettyPrint() {
+	fmt.Printf("> %f\n", c.Value)
+}
+
+type Group[T Printable] []T
+
+func (g Group[T]) PrettyPrint() {
+	for _, v := range g {
+		v.PrettyPrint()
+	}
 }
 
 func main() {
-	prettyPrint(.25)
-
-	prettyPrint2[float64](.25)
-	prettyPrint2[string]("pockets")
+	g := Group[Cloud]{
+		{Value: 1.23},
+		{Value: 4.56},
+	}
+	g.PrettyPrint()
 }
