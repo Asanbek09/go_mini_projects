@@ -29,11 +29,7 @@ func NewClient(timeout time.Duration) Client {
 func (c Client) FetchExchangeRate(source, target money.Currency) (money.ExchangeRate, error) {
 	const euroxrefURL = "http://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml"
 
-	if c.url == "" {
-		c.url = euroxrefURL
-	}
-
-	resp, err := http.Get(c.url)
+	resp, err := c.client.Get(euroxrefURL)
 
 	if err = checkStatusCode(resp.StatusCode); err != nil {
 		return money.ExchangeRate{}, err

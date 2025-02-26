@@ -6,6 +6,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"time"
 )
 
 func main() {
@@ -45,7 +46,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	rates := ecbank.Client{}
+	rates := ecbank.NewClient(30 * time.Second)
 
 	convertedAmount, err := money.Convert(amount, toCurrency, rates)
 	if err != nil {
