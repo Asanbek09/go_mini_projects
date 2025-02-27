@@ -20,3 +20,7 @@ func (c *Cache[K, V]) Upsert(key K, value V) error {
 
 	return nil
 }
+
+func (c *Cache[K, V]) Delete(key K) {
+	delete(c.data, key)
+}
