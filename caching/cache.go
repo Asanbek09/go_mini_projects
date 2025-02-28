@@ -53,10 +53,15 @@ func (c *Cache[K, V]) Upsert(key K, value V) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 	
-	c.data[key] = entryWithTimeout[V]{
-		value: value,
-		expires: time.Now().Add(c.ttl),
+	_, alreadyPresent := c.data[key]
+	switch {
+	case alreadyPresent:
+		c.deleteKeyValue(key)
+	case len(c.data) == c.maxSize:
+		c.deleteKeyValue(c.chronologicalKeys[0])
 	}
+
+	c.addKeyValue(key, value)
 }
 
 func (c *Cache[K, V]) Delete(key K) {
