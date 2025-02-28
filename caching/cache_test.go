@@ -1,9 +1,12 @@
 package caching_test
 
 import (
-	"testing"
-	"github.com/stretchr/testify/assert"
 	cache "caching"
+	"fmt"
+	"sync"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 
@@ -41,4 +44,22 @@ func TestCache(t *testing.T) {
 	v, found = c.Read(3)
 	assert.True(t, found)
 	assert.Equal(t, "drei", v)
+}
+
+func TestCache_Parallel_goroutines(t *testing.T) {
+	c := cache.New[int, string]()
+
+	const parallelTasks = 10
+	wg := sync.WaitGroup{}
+	wg.Add(parallelTasks)
+
+	for i := 0; i < parallelTasks; i++ {
+		go func(j int) {
+			defer wg.Done()
+
+			c.Upsert(4, fmt.Sprint(j))
+		}(i)
+	}
+
+	wg.Wait()
 }
