@@ -1,15 +1,26 @@
 package caching
 
-import "sync"
+import (
+	"sync"
+	"time"
+)
 
-type Cache[K comparable, V any] struct {
-	mu sync.RWMutex
-	data map[K]V
+type entryWithTimeout[V any] struct {
+	value V
+	expires time.Time
 }
 
-func New[K comparable, V any]() Cache[K, V] {
+type Cache[K comparable, V any] struct {
+	ttl time.Duration
+
+	mu sync.RWMutex
+	data map[K]entryWithTimeout[V]
+}
+
+func New[K comparable, V any](ttl time.Duration) Cache[K, V] {
 	return Cache[K, V]{
-		data: make(map[K]V),
+		ttl: ttl,
+		data: make(map[K]entryWithTimeout[V]),
 	}
 }
 
