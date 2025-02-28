@@ -42,7 +42,7 @@ func (c *Cache[K, V]) Read(key K) (V, bool) {
 	case !ok:
 		return zeroV, false
 	case e.expires.Before(time.Now()):
-		delete(c.data, key)
+		c.deleteKeyValue(key)
 		return zeroV, false
 	default:
 		return e.value, true
@@ -63,7 +63,7 @@ func (c *Cache[K, V]) Delete(key K) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 
-	delete(c.data, key)
+	c.deleteKeyValue(key)
 }
 
 func (c *Cache[K, V]) addKeyValue(key K, value V) {
