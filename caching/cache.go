@@ -25,11 +25,22 @@ func New[K comparable, V any](ttl time.Duration) Cache[K, V] {
 }
 
 func (c *Cache[K, V]) Read(key K) (V, bool) {
-	c.mu.RLock()
-	defer c.mu.RUnlock()
-	
-	v, found := c.data[key]
-	return v, found
+	c.mu.Lock()
+	defer c.mu.Unlock()
+
+	var zeroV V
+
+	e, ok := c.data[key]
+
+	switch {
+	case !ok:
+		return zeroV, false
+	case e.expires.Before(time.Now()):
+		delete(c.data, key)
+		return zeroV, false
+	default:
+		return e.value, true
+	}
 }
 
 func (c *Cache[K, V]) Upsert(key K, value V) {
