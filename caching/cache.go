@@ -64,3 +64,11 @@ func (c *Cache[K, V]) Delete(key K) {
 
 	delete(c.data, key)
 }
+
+func (c *Cache[K, V]) addKeyValue(key K, value V) {
+	c.data[key] = entryWithTimeout[V]{
+		value: value,
+		expires: time.Now().Add(c.ttl),
+	}
+	c.chronologicalKeys = append(c.chronologicalKeys, key)
+}
