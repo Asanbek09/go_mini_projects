@@ -14,16 +14,23 @@ func New[K comparable, V any]() Cache[K, V] {
 }
 
 func (c *Cache[K, V]) Read(key K) (V, bool) {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	
 	v, found := c.data[key]
 	return v, found
 }
 
-func (c *Cache[K, V]) Upsert(key K, value V) error {
+func (c *Cache[K, V]) Upsert(key K, value V) {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	
 	c.data[key] = value
-
-	return nil
 }
 
 func (c *Cache[K, V]) Delete(key K) {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+
 	delete(c.data, key)
 }
