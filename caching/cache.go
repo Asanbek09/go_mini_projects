@@ -1,6 +1,7 @@
 package caching
 
 import (
+	"slices"
 	"sync"
 	"time"
 )
@@ -71,4 +72,9 @@ func (c *Cache[K, V]) addKeyValue(key K, value V) {
 		expires: time.Now().Add(c.ttl),
 	}
 	c.chronologicalKeys = append(c.chronologicalKeys, key)
+}
+
+func (c *Cache[K, V]) deleteKeyValue(key K) {
+	c.chronologicalKeys = slices.DeleteFunc(c.chronologicalKeys, func(k K) bool { return k == key})
+	delete(c.data, key)
 }
