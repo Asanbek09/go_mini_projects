@@ -63,3 +63,17 @@ func TestCache_Parallel_goroutines(t *testing.T) {
 
 	wg.Wait()
 }
+
+func TestCache_Parallel(t *testing.T) {
+	c := cache.New[int, string]()
+
+	t.Run("write six", func(t *testing.T) {
+		t.Parallel()
+		c.Upsert(6, "six")
+	})
+
+	t.Run("write kuus", func(t *testing.T) {
+		t.Parallel()
+		c.Upsert(6, "kuus")
+	})
+}
