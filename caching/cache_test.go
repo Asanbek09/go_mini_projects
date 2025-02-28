@@ -12,7 +12,7 @@ import (
 
 
 func TestCache(t *testing.T) {
-	c := cache.New[int, string]()
+	c := cache.New[int, string](5, time.Minute)
 
 	c.Upsert(5, "funf")
 
@@ -48,7 +48,7 @@ func TestCache(t *testing.T) {
 }
 
 func TestCache_Parallel_goroutines(t *testing.T) {
-	c := cache.New[int, string]()
+	c := cache.New[int, string](5, time.Second)
 
 	const parallelTasks = 10
 	wg := sync.WaitGroup{}
@@ -66,7 +66,7 @@ func TestCache_Parallel_goroutines(t *testing.T) {
 }
 
 func TestCache_Parallel(t *testing.T) {
-	c := cache.New[int, string]()
+	c := cache.New[int, string](3, time.Second)
 
 	t.Run("write six", func(t *testing.T) {
 		t.Parallel()
