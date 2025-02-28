@@ -1,6 +1,9 @@
 package caching
 
+import "sync"
+
 type Cache[K comparable, V any] struct {
+	mu sync.Mutex
 	data map[K]V
 }
 
