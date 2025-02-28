@@ -13,14 +13,19 @@ type entryWithTimeout[V any] struct {
 type Cache[K comparable, V any] struct {
 	ttl time.Duration
 
-	mu sync.RWMutex
+	mu sync.Mutex
 	data map[K]entryWithTimeout[V]
+
+	maxSize int
+	chronologicalKeys []K
 }
 
-func New[K comparable, V any](ttl time.Duration) Cache[K, V] {
+func New[K comparable, V any](maxSize int, ttl time.Duration) Cache[K, V] {
 	return Cache[K, V]{
 		ttl: ttl,
 		data: make(map[K]entryWithTimeout[V]),
+		maxSize: maxSize,
+		chronologicalKeys: make([]K, 0, maxSize),
 	}
 }
 
