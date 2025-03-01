@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"gordle2/internal/api"
+	"gordle2/internal/handlers/getstatus"
 	"gordle2/internal/handlers/newgame"
 	"net/http"
 )
@@ -16,6 +17,7 @@ func Mux() *http.ServeMux {
 func NewRouter() *http.ServeMux {
 	r := http.NewServeMux()
 	r.HandleFunc(http.MethodPost + " " + api.NewGameRoute, newgame.Handle)
+	r.HandleFunc(http.MethodPost + " " + api.GetStatusRoute, getstatus.Handle)
 
 	return r
 }
