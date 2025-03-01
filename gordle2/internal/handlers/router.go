@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"gordle2/internal/api"
+	"gordle2/internal/handlers/newgame"
 	"net/http"
 )
 
