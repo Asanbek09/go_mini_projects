@@ -1,5 +1,7 @@
 package session
 
+import "errors"
+
 type Game struct {
 	ID GameID
 	Attemptsleft byte
@@ -21,3 +23,5 @@ type Guess struct {
 	Word string
 	Feedback string
 }
+
+var ErrGameOver = errors.New("Game Over")
