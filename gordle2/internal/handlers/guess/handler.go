@@ -3,15 +3,15 @@ package guess
 import (
 	"encoding/json"
 	"gordle2/internal/api"
+	"gordle2/internal/session"
 	"log"
 	"net/http"
 )
 
 func Handle(w http.ResponseWriter, req *http.Request) {
-
 	id := req.PathValue(api.GameID)
 	if id == "" {
-		http.Error(w, "missing th id of the game", http.StatusBadRequest)
+		http.Error(w, "missing the id of the game", http.StatusBadRequest)
 		return
 	}
 
@@ -22,13 +22,18 @@ func Handle(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	apiGame := api.GameResponse{
-		ID: id,
-	}
+	game := guess(id, r)
+	apiGame := api.ToGameResponse(game)
 
 	w.Header().Set("Content-Type", "application/json")
 	err = json.NewEncoder(w).Encode(apiGame)
 	if err != nil {
 		log.Printf("failed to write response: %s", err)
+	}
+}
+
+func guess(id string, r api.GuessRequest) session.Game {
+	return session.Game{
+		ID: session.GameID(id),
 	}
 }
