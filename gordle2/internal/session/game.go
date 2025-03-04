@@ -4,6 +4,7 @@ import "errors"
 
 type Game struct {
 	ID           GameID
+	Gordle       gordle.Game
 	AttemptsLeft byte
 	Guesses      []Guess
 	Status       Status

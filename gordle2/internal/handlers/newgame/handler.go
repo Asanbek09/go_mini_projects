@@ -2,6 +2,7 @@ package newgame
 
 import (
 	"encoding/json"
+	"fmt"
 	"gordle2/internal/api"
 	"gordle2/internal/session"
 	"log"
@@ -27,6 +28,29 @@ func Handler(adder gameAdder) http.HandlerFunc {
 	}
 }
 
-func createGame(db gameAdder) session.Game {
-	return session.Game{}
+func createGame(db gameAdder) (session.Game, error) {
+	corpus, err := gordle2.ReadCorpus("corpus/english.txt")
+	if err != nil {
+		return session.Game{}, fmt.Errorf("unable to read corpus: %w", err)
+	}
+
+	game, err := gordle2.New(corpus)
+	if err != nil {
+		return session.Game{}, fmt.Errorf("failed to create a new gordle game")
+	}
+
+	g := session.Game{
+		ID: session.GameID(ulid.Make().String()),
+		Gordle: *game,
+		AttemptsLeft: maxAttempts,
+		Guesses: []session.Guess{},
+		Status: session.StatusPlaying,
+	}
+
+	err = db.Add(g)
+	if err != nil {
+		return session.Game{}, fmt.Errorf("failed to save the new game")
+	}
+
+	return g, nil
 }
