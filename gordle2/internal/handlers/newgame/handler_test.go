@@ -25,6 +25,17 @@ func TestHandle(t *testing.T) {
 	assert.JSONEq(t, `{"id":"","attempts_left":0,"guesses":[],"word_length":0,"status":""}`, recorder.Body.String())
 }
 
+func Test_createGame(t *testing.T) {
+	corpusPath  = "testdata/corpus.txt"
+
+	g, err := createGame(gameCreatorStub{nil})
+	require.NoError(t, err)
+
+	assert.Regexp(t, "[A-Z0-9]+", g.ID)
+	assert.Equal(t, uint8(5), g.AttemptsLeft)
+	assert.Equal(t, 0, len(g.Guesses))
+}
+
 type gameAdderStub struct {
 	err error
 }
