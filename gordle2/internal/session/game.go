@@ -1,6 +1,9 @@
 package session
 
-import "errors"
+import (
+	"errors"
+	"gordle2/internal/gordle"
+)
 
 type Game struct {
 	ID           GameID
