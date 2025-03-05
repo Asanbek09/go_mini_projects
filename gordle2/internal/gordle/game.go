@@ -10,13 +10,13 @@ type Game struct {
 	solution []rune
 }
 
-func New(solution string) (*Game, error) {
+func New(corpus []string) (*Game, error) {
 	if len(corpus) == 0 {
 		return nil, ErrEmptyCorpus
 	}
 
 	return &Game{
-		solution: splitToUppercaseCharacters(solution),
+		solution: splitToUppercaseCharacters(pickRandomWord(corpus)), // pick a random word from the corpus
 	}, nil
 }
 

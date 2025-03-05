@@ -1,11 +1,9 @@
 package gordle
 
 import (
-	"crypto/rand"
-	_ "embed"
-	"fmt"
-	"math/big"
+	"math/rand"
 	"strings"
+	"time"
 )
 
 const (
@@ -26,11 +24,10 @@ func ParseCorpus() ([]string, error) {
 	return words, nil
 }
 
-func PickRandomWord(corpus []string) (string, error) {
-	index, err := rand.Int(rand.Reader, big.NewInt(int64(len(corpus))))
-	if err != nil {
-		return "", fmt.Errorf("failed to rand index (%s): %w", err, ErrPickRandomWord)
-	}
+func pickRandomWord(corpus []string) string {
 
-	return corpus[index.Int64()], nil
+	rand.Seed(time.Now().UTC().UnixNano())
+	index := rand.Intn(len(corpus))
+
+	return corpus[index]
 }
