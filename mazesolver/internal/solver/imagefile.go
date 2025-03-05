@@ -26,3 +26,7 @@ func openMaze(imagePath string) (*image.RGBA, error) {
 
 	return rgbaImage, nil
 }
+
+func (s *Solver) SaveSolution(outputPath string) error {
+	return nil
+}
