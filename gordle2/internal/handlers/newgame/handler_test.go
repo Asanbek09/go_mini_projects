@@ -3,7 +3,7 @@ package newgame
 import (
 	"gordle2/internal/api"
 	"gordle2/internal/session"
-	"gordle2/internal/gordle"
+
 	"net/http"
 	"net/http/httptest"
 	"regexp"
@@ -65,15 +65,15 @@ func TestHandler(t *testing.T) {
 }
 
 func Test_createGame(t *testing.T) {
-	g, err := createGame(gameCreatorStub{nil})
+	corpusPath := "testdata/corpus.txt"
+
+	g, err := createGame(gameCreatorStub{nil}, corpusPath)
 	require.NoError(t, err)
 
 	assert.Equal(t, uint8(5), g.AttemptsLeft)
 	assert.Equal(t, 0, len(g.Guesses))
 	assert.Regexp(t, "[A-Z0-9]+", g.ID)
-
-	corpus, _ := gordle.ParseCorpus()
-	assert.Contains(t, corpus, g.Gordle.ShowAnswer())
+	assert.Equal(t, "GAMER", g.Gordle.ShowAnswer())
 }
 
 type gameCreatorStub struct {

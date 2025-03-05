@@ -18,17 +18,17 @@ func TestGameValidateGuess(t *testing.T) {
 		},
 		"too long": {
 			word:     "POCKET",
-			expected: ErrInvalidGuessLength,
+			expected: ErrInvalidGuess,
 		},
 		"empty": {
 			word:     "",
-			expected: ErrInvalidGuessLength,
+			expected: ErrInvalidGuess,
 		},
 	}
 
 	for name, tc := range tt {
 		t.Run(name, func(t *testing.T) {
-			g, _ := New("SLICE")
+			g, _ := New([]string{"SLICE"})
 
 			err := g.validateGuess(tc.word)
 			if !errors.Is(err, tc.expected) {

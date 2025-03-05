@@ -16,12 +16,12 @@ func New(corpus []string) (*Game, error) {
 	}
 
 	return &Game{
-		solution: splitToUppercaseCharacters(pickRandomWord(corpus)), // pick a random word from the corpus
+		solution: splitToUppercaseCharacters(pickRandomWord(corpus)),
 	}, nil
 }
 
 const (
-	ErrInvalidGuessLength = gameError("invalid guess length")
+	ErrInvalidGuess = gameError("invalid guess length")
 )
 
 func (g *Game) Play(guess string) (Feedback, error) {
@@ -37,7 +37,7 @@ func (g *Game) Play(guess string) (Feedback, error) {
 
 func (g *Game) validateGuess(guess string) error {
 	if len(guess) != len(g.solution) {
-		return fmt.Errorf("you guessed a %d word length, remember the answer is %d word length, %w", len(guess), len(g.solution), ErrInvalidGuessLength)
+		return fmt.Errorf("you guessed a %d word length, remember the answer is %d word length, %w", len(guess), len(g.solution), ErrInvalidGuess)
 	}
 
 	return nil

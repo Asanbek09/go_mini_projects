@@ -1,30 +1,21 @@
 package gordle
 
-import (
-	"testing"
-)
+import "testing"
 
 func TestPickRandomWord(t *testing.T) {
-	words := []string{"HELLO", "SALUT", "ПРИВЕТ", "ΧΑΙΡΕ"}
-	word, err := PickRandomWord(words)
-	if err != nil {
-		t.Fatalf("expected no error, got %s", err)
-	}
+	corpus := []string{"HELLO", "SALUT", "ПРИВЕТ", "ΧΑΙΡΕ"}
+	word := pickRandomWord(corpus)
 
-	if !inCorpus(words, word) {
+	if !inCorpus(corpus, word) {
 		t.Errorf("expected a word in the corpus, got %q", word)
 	}
 }
 
-func inCorpus(words []string, word string) bool {
-	for _, corpusWord := range words {
+func inCorpus(corpus []string, word string) bool {
+	for _, corpusWord := range corpus {
 		if corpusWord == word {
 			return true
 		}
 	}
 	return false
-}
-
-func OverrideCorpus(newCorpus string) {
-	corpus = newCorpus
 }

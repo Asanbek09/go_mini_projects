@@ -37,7 +37,7 @@ func Handler(guesser gameGuesser) http.HandlerFunc {
 			switch {
 			case errors.Is(err, repository.ErrNotFound):
 				http.Error(w, err.Error(), http.StatusNotFound)
-			case errors.Is(err, gordle.ErrInvalidGuessLength):
+			case errors.Is(err, gordle.ErrInvalidGuess):
 				http.Error(w, err.Error(), http.StatusBadRequest)
 			case errors.Is(err, session.ErrGameOver):
 				http.Error(w, err.Error(), http.StatusForbidden)
