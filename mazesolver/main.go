@@ -16,3 +16,8 @@ func main() {
 
 	log.Printf("Solving maze %q and saving it as %q", inputFile, outputFile)
 }
+
+func usage() {
+	_, _ = fmt.Fprintln(os.Stderr, "Usage: maze_solver input.png output.png")
+	os.Exit(1)
+}
