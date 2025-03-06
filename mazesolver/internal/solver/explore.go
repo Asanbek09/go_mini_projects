@@ -32,6 +32,14 @@ func (s *Solver) explore(pathToBranch *path) {
 			log.Printf("I must have taken the wrong turn at position %v", pos)
 			return
 		}
+
+		for _, candidate := range candidates[1:] {
+			branch := &path{previousStep: pathToBranch, at: candidate}
+			s.pathsToExplore <- branch
+		}
+
+		pathToBranch = &path{previousStep: pathToBranch, at: candidates[0]}
+		pos = candidates[0]
 	}
 }
 
