@@ -46,3 +46,9 @@ func (s *Solver) explore(pathToBranch *path) {
 func (p path) isPreviousStep(n image.Point) bool {
 	return p.isPreviousStep != nil && p.previousStep.at == n
 }
+
+func (s *Solver) listenToBranches() {
+	for p := range s.pathsToExplore {
+		go s.explore(p)
+	}
+}
