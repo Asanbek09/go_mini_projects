@@ -3,6 +3,7 @@ package solver
 import (
 	"fmt"
 	"image"
+	"log"
 )
 
 type Solver struct {
@@ -11,6 +12,12 @@ type Solver struct {
 }
 
 func (s *Solver) Solve() error {
+	entrance, err := s.findEntrance()
+	if err != nil {
+		return fmt.Errorf("unable to find entrance: %w", err)
+	}
+
+	log.Printf("starting at %v", entrance)
 	return nil
 }
 
