@@ -7,6 +7,7 @@ import (
 
 type Solver struct {
 	maze *image.RGBA
+	palette palette
 }
 
 func (s *Solver) Solve() error {
