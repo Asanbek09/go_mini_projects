@@ -19,6 +19,10 @@ func (s *Solver) Solve() error {
 	}
 
 	log.Printf("starting at %v", entrance)
+
+	s.pathsToExplore <- &path{previousStep: nil, at: entrance}
+	s.listenToBranches()
+
 	return nil
 }
 
@@ -30,6 +34,8 @@ func New(imagePath string) (*Solver, error) {
 
 	return &Solver{
 		maze: img,
+		palette: defaultPalette(),
+		pathsToExplore: make(chan *path, 1),
 	}, nil
 }
 
