@@ -8,6 +8,7 @@ type palette struct {
 	entrance color.RGBA
 	treasure color.RGBA
 	solution color.RGBA
+	explored color.RGBA
 }
 
 func defaultPalette() palette {
@@ -17,5 +18,6 @@ func defaultPalette() palette {
 		entrance: color.RGBA{R: 0, G: 191, B: 255, A: 255},
 		treasure: color.RGBA{R: 255, G: 0, B: 128, A: 255},
 		solution: color.RGBA{R: 255, G: 140, B: 0, A: 255},
+		explored: color.RGBA{R: 0, G: 128, B: 255, A: 255},
 	}
 }

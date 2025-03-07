@@ -14,6 +14,15 @@ func (s *Solver) explore(pathToBranch *path) {
 	pos := pathToBranch.at
 
 	for {
+		s.maze.Set(pos.X, pos.Y, s.palette.explored)
+
+		select {
+		case <-s.quit:
+			return
+		default:
+			//
+		}
+
 		candidates := make([]image.Point, 0, 3)
 		for _, n := range neighbours(pos) {
 			if pathToBranch.isPreviousStep(n) {
@@ -27,6 +36,7 @@ func (s *Solver) explore(pathToBranch *path) {
 				if s.solution == nil {
 					s.solution = &path{previousStep: pathToBranch, at: n}
 					log.Printf("Treasure found at %v!", n)
+					s.quit <- struct{}{}
 				}
 				
 				return
@@ -42,7 +52,13 @@ func (s *Solver) explore(pathToBranch *path) {
 
 		for _, candidate := range candidates[1:] {
 			branch := &path{previousStep: pathToBranch, at: candidate}
-			s.pathsToExplore <- branch
+			select {
+			case <- s.quit:
+				log.Printf("I am an unlucky branch, someone else found the treasure, I give it up at position %v", pos)
+				return
+			case s.pathsToExplore <- branch:
+				//
+			}
 		}
 
 		pathToBranch = &path{previousStep: pathToBranch, at: candidates[0]}
