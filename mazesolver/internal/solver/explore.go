@@ -25,6 +25,10 @@ func (s *Solver) explore(pathToBranch *path) {
 				return
 			case s.palette.path:
 				candidates = append(candidates, )
+			case s.palette.treasure:
+				s.solution = &path{previousStep: pathToBranch, at: n}
+				log.Printf("Treasure found at %v !", n)
+				return
 			}
 		}
 

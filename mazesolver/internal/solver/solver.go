@@ -10,6 +10,7 @@ type Solver struct {
 	maze *image.RGBA
 	palette palette
 	pathsToExplore chan *path
+	solution *path
 }
 
 func (s *Solver) Solve() error {
