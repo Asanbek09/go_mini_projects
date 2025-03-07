@@ -3,6 +3,7 @@ package solver
 import (
 	"image"
 	"log"
+	"sync"
 )
 
 func (s *Solver) explore(pathToBranch *path) {
@@ -54,9 +55,16 @@ func (p path) isPreviousStep(n image.Point) bool {
 }
 
 func (s *Solver) listenToBranches() {
+	wg := sync.WaitGroup{}
+	defer wg.Wait()
+
 	for p := range s.pathsToExplore {
-		go s.explore(p)
-		if s.solutionFound() {
+		wg.Add(1)
+		go func(path *path) {
+			defer wg.Done()
+			s.explore(path)
+		}(p)
+		if s.solution != nil {
 			return
 		}
 	}
