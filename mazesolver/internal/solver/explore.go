@@ -19,6 +19,8 @@ func (s *Solver) explore(pathToBranch *path) {
 		select {
 		case <-s.quit:
 			return
+		case s.exploredPixels <- pos:
+			//
 		default:
 			//
 		}

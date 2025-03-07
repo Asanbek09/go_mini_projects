@@ -15,6 +15,7 @@ type Solver struct {
 	solution *path
 	mutex sync.Mutex
 	quit chan struct {}
+	exploredPixels chan image.Point
 	animation *gif.GIF
 }
 
