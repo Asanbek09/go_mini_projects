@@ -1,11 +1,14 @@
 package solver
 
 import (
+	"errors"
 	"fmt"
 	"image"
+	"image/gif"
 	"image/png"
+	"log"
 	"os"
-	"errors"
+	"strings"
 )
 
 func openMaze(imagePath string) (*image.RGBA, error) {
@@ -48,6 +51,33 @@ func (s *Solver) SaveSolution(outputPath string) (err error) {
 	err = png.Encode(f, s.maze)
 	if err != nil {
 		return fmt.Errorf("unable to write output image at %s: %w", outputPath, err)
+	}
+
+	gifPath := strings.Replace(outputPath, "png", "gif", -1)
+	err = s.saveAnimation(gifPath)
+	if err != nil {
+		return fmt.Errorf("unable to write output animation at %s", gifPath)
+	}
+
+	return nil
+}
+
+func (s *Solver) saveAnimation(gifPath string) error {
+	outputImage, err := os.Create(gifPath)
+	if err != nil {
+		return fmt.Errorf("unable to create output gif at %s: %w", gifPath, err)
+	}
+
+	defer func() {
+		if closeErr := outputImage.Close(); closeErr != nil {
+			err = errors.Join(err, fmt.Errorf("unable to close file: %w", closeErr))
+		}
+	}()
+
+	log.Printf("animation contains %d frames\n", len(s.animation.Image))
+	err = gif.EncodeAll(outputImage, s.animation)
+	if err != nil {
+		return fmt.Errorf("unable to encode gof: %w", err)
 	}
 
 	return nil
