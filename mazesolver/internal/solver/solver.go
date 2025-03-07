@@ -49,6 +49,10 @@ func (s *Solver) Solve() error {
 		s.listenToBranches()
 	}()
 
+	wg.Wait()
+
+	s.writeLastFrame()
+
 	return nil
 }
 
@@ -75,4 +79,16 @@ func (s *Solver) findEntrance() (image.Point, error) {
 	}
 
 	return image.Point{}, fmt.Errorf("entrance position not found")
+}
+
+func (s *Solver) writeLastFrame() {
+	stepsFromTreasure := s.solution
+	for stepsFromTreasure != nil {
+		s.maze.Set(stepsFromTreasure.at.X, stepsFromTreasure.at.Y, s.palette.solution)
+		stepsFromTreasure = stepsFromTreasure.previousStep
+	}
+
+	const solutionFrameDuration = 300
+	s.drawCurrentFrameToGIF()
+	s.animation.Delay[len(s.animation.Delay)-1] = solutionFrameDuration
 }
