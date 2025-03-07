@@ -56,5 +56,14 @@ func (p path) isPreviousStep(n image.Point) bool {
 func (s *Solver) listenToBranches() {
 	for p := range s.pathsToExplore {
 		go s.explore(p)
+		if s.solutionFound() {
+			return
+		}
 	}
+}
+
+func (s *Solver) solutionFound() bool {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+	return s.solution != nil
 }
