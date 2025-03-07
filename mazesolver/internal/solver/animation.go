@@ -1,5 +1,12 @@
 package solver
 
+import (
+	"image"
+	plt "image/color/palette"
+
+	"golang.org/x/image/draw"
+)
+
 func (s *Solver) countExplorablePixels() int {
 	explorablePixels := 0
 	for row :=0; row < s.maze.Bounds().Dy(); row++ {
@@ -30,4 +37,18 @@ func (s *Solver) registerExploredPixels() {
 			}
 		}
 	}
+}
+
+func (s *Solver) drawCurrentFrameToGIF() {
+	const (
+		gifWidth = 500
+		frameDuration = 20
+	)
+
+	frame := image.NewPaletted(image.Rect(0, 0, gifSize, gifWidth*s.maze.Bounds().Dy()/s.maze.Bounds().Dx()), plt.Plan9)
+
+	draw.NearestNeighbor.Scale(frame, frame.Rect, s.maze, s.maze.Bounds(), draw.Over, nil)
+
+	s.animation.Image = append(s.animation.Image, frame)
+	s.animation.Delay = append(s.animation.Delay, frameDuration)
 }
