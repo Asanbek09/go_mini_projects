@@ -5,6 +5,7 @@ import (
 	"image"
 	"log"
 	"sync"
+	"image/gif"
 )
 
 type Solver struct {
@@ -14,6 +15,7 @@ type Solver struct {
 	solution *path
 	mutex sync.Mutex
 	quit chan struct {}
+	animation *gif.GIF
 }
 
 func (s *Solver) Solve() error {
