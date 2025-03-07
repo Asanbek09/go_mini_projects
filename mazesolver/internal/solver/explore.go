@@ -31,7 +31,7 @@ func (s *Solver) explore(pathToBranch *path) {
 				
 				return
 			case s.palette.path:
-				candidates = append(candidates, )
+				candidates = append(candidates, n)
 			}
 		}
 
@@ -58,14 +58,18 @@ func (s *Solver) listenToBranches() {
 	wg := sync.WaitGroup{}
 	defer wg.Wait()
 
-	for p := range s.pathsToExplore {
-		wg.Add(1)
-		go func(path *path) {
-			defer wg.Done()
-			s.explore(path)
-		}(p)
-		if s.solution != nil {
+	for {
+		select {
+		case <-s.quit:
+			log.Println("the treasure has been found, stopping worker")
 			return
+		case p := <-s.pathsToExplore:
+			wg.Add(1)
+			go func(p *path) {
+				defer wg.Done()
+
+				s.explore(p)
+			}(p)
 		}
 	}
 }

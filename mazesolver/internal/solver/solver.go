@@ -13,6 +13,7 @@ type Solver struct {
 	pathsToExplore chan *path
 	solution *path
 	mutex sync.Mutex
+	quit chan struct {}
 }
 
 func (s *Solver) Solve() error {
