@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"image"
 	"log"
+	"sync"
 )
 
 type Solver struct {
@@ -11,6 +12,7 @@ type Solver struct {
 	palette palette
 	pathsToExplore chan *path
 	solution *path
+	mutex sync.Mutex
 }
 
 func (s *Solver) Solve() error {

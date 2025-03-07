@@ -21,14 +21,16 @@ func (s *Solver) explore(pathToBranch *path) {
 
 			switch s.maze.RGBAAt(n.X, n.Y) {
 			case s.palette.treasure:
-				log.Printf("Treasure found at %v!", n)
+				s.mutex.Unlock()
+				defer s.mutex.Unlock()
+				if s.solution == nil {
+					s.solution = &path{previousStep: pathToBranch, at: n}
+					log.Printf("Treasure found at %v!", n)
+				}
+				
 				return
 			case s.palette.path:
 				candidates = append(candidates, )
-			case s.palette.treasure:
-				s.solution = &path{previousStep: pathToBranch, at: n}
-				log.Printf("Treasure found at %v !", n)
-				return
 			}
 		}
 
