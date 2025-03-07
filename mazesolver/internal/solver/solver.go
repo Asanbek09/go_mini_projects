@@ -30,6 +30,25 @@ func (s *Solver) Solve() error {
 	s.pathsToExplore <- &path{previousStep: nil, at: entrance}
 	s.listenToBranches()
 
+	log.Printf("starting at %v", entrance)
+
+	s.pathsToExplore <- &path{previousStep: nil, at: entrance}
+
+	wg := sync.WaitGroup{}
+	wg.Add(2)
+
+	defer wg.Wait()
+
+	go func() {
+		defer wg.Done()
+		s.registerExploredPixels()
+	}()
+
+	go func() {
+		defer wg.Done()
+		s.listenToBranches()
+	}()
+
 	return nil
 }
 

@@ -45,7 +45,7 @@ func (s *Solver) drawCurrentFrameToGIF() {
 		frameDuration = 20
 	)
 
-	frame := image.NewPaletted(image.Rect(0, 0, gifSize, gifWidth*s.maze.Bounds().Dy()/s.maze.Bounds().Dx()), plt.Plan9)
+	frame := image.NewPaletted(image.Rect(0, 0, gifWidth, gifWidth*s.maze.Bounds().Dy()/s.maze.Bounds().Dx()), plt.Plan9)
 
 	draw.NearestNeighbor.Scale(frame, frame.Rect, s.maze, s.maze.Bounds(), draw.Over, nil)
 
