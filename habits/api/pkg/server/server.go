@@ -22,7 +22,7 @@ type Logger interface {
 	Logf(format string, args ...any)
 }
 
-func (s *Server) ListenAndServer(port int) error {
+func (s *Server) ListenAndServe(port int) error {
 	const addr = "127.0.0.1"
 
 	listener, err := net.Listen("tcp", net.JoinHostPort(addr, strconv.Itoa(port)))
