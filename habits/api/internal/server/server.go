@@ -3,7 +3,6 @@ package server
 import (
 	"fmt"
 	"net"
-	"context"
 	"strconv"
 
 	"google.golang.org/grpc"
@@ -42,8 +41,4 @@ func (s *Server) ListenAndServer(port int) error {
 	}
 
 	return nil
-}
-
-func (s *Server) CreateHabit(ctx context.Context, req *api.CreateHabitRequest) (*api.CreateHabitResponse, error) {
-	return &api.CreateHabitResponse{}, nil
 }
