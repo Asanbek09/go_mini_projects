@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package habits;
+option go_package = "habits/api";
+
+service Habits {
+    
+}
