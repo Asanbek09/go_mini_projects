@@ -30,3 +30,19 @@ func testValidateAndFillDetailsFull(t testing.T) {
 	require.NoError(t, err)
 	assert.Equal(t, h, got)
 }
+
+func testValidateAndFillDetailsPartial(t *testing.T) {
+	t.Parallel()
+
+	h := Habit{
+		Name:            "laugh",
+		WeeklyFrequency: 256,
+	}
+
+	got, err := validateAndFillDetails(h)
+	require.NoError(t, err)
+	assert.Equal(t, h.Name, got.Name)
+	assert.Equal(t, h.WeeklyFrequency, got.WeeklyFrequency)
+	assert.NotEmpty(t, got.ID)
+	assert.NotEmpty(t, got.CreationTime)
+}
