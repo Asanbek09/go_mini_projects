@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func Test_validateAndFillDetails(t testing.T) {
+func Test_validateAndFillDetails(t *testing.T) {
 	t.Parallel()
 
 	t.Run("Full", testValidateAndFillDetailsFull)
