@@ -16,7 +16,7 @@ func Test_validateAndFillDetails(t testing.T) {
 	t.Run("SpaceName", testValidateAndFillDetailsSpaceName)
 }
 
-func testValidateAndFillDetailsFull(t testing.T) {
+func testValidateAndFillDetailsFull(t *testing.T) {
 	t.Parallel()
 
 	h := Habit{
@@ -45,4 +45,16 @@ func testValidateAndFillDetailsPartial(t *testing.T) {
 	assert.Equal(t, h.WeeklyFrequency, got.WeeklyFrequency)
 	assert.NotEmpty(t, got.ID)
 	assert.NotEmpty(t, got.CreationTime)
+}
+
+func testValidateAndFillDetailsSpaceName(t *testing.T) {
+	t.Parallel()
+
+	h := Habit{
+		Name:            "    ",
+		WeeklyFrequency: 256,
+	}
+
+	_, err := validateAndFillDetails(h)
+	assert.ErrorAs(t, err, &InvalidInputError{})
 }
