@@ -2,10 +2,30 @@ package habit
 
 import (
 	"strings"
+	"context"
+	"fmt"
 
 	"time"
 	"github.com/google/uuid"
 )
+
+type habitCreator interface {
+	Add(ctx context.Context, habit Habit) error
+}
+
+func Create(ctx context.Context, db habitCreator, h Habit) (Habit, error) {
+	h, err := validateAndFillDetails(h)
+	if err != nil {
+		return Habit{}, err
+	}
+
+	err = db.Add(ctx, h)
+	if err != nil {
+		return Habit{}, fmt.Errorf("cannot save habit: %w", err)
+	}
+
+	return h, nil
+}
 
 func validateAndCompleteHabit(h Habit) (Habit, error) {
 	h.Name = Name(strings.TrimSpace(string(h.Name)))
