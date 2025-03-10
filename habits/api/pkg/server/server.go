@@ -1,25 +1,33 @@
 package server
 
 import (
+	"context"
 	"fmt"
 	"net"
 	"strconv"
 
 	"google.golang.org/grpc"
+
 	"habits/api"
+	"habits/api/pkg/habit"
 )
 
 type Server struct {
 	api.UnimplementedHabitsServer
+	db  Repository
 	lgr Logger
 }
 
-func New(lgr Logger) *Server {
-	return &Server{lgr: lgr,}
+type Repository interface {
+	Add(ctx context.Context, habit habit.Habit) error
+	FindAll(ctx context.Context) ([]habit.Habit, error)
 }
 
-type Logger interface {
-	Logf(format string, args ...any)
+func New(repo Repository, lgr Logger) *Server {
+	return &Server{
+		db:  repo,
+		lgr: lgr,
+	}
 }
 
 func (s *Server) ListenAndServe(port int) error {
@@ -41,4 +49,8 @@ func (s *Server) ListenAndServe(port int) error {
 	}
 
 	return nil
+}
+
+type Logger interface {
+	Logf(format string, args ...any)
 }

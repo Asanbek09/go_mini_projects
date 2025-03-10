@@ -14,7 +14,7 @@ type habitCreator interface {
 }
 
 func Create(ctx context.Context, db habitCreator, h Habit) (Habit, error) {
-	h, err := validateAndFillDetails(h)
+	h, err := validateAndCompleteHabit(h)
 	if err != nil {
 		return Habit{}, err
 	}
